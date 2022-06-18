@@ -70,6 +70,7 @@ Node* bstFromPreOrder(vector<int> &preorder){
     constructBST(preorder,n,1,root,INT_MIN,INT_MAX);
     return root;
 }
+
 int main(){
     int n;cin>>n;
     int temp;cin>>temp;
