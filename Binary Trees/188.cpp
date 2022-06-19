@@ -19,7 +19,7 @@ Node* createNode(int data){
 vector<int> topView(Node *root)
 {
     queue<pair<Node*,int>> q; // for bfs
-    map<int, int>m; // height, value
+    map<int, int>m; // vertical height, value
     vector<int> v;
     if(!root) return v;
 
@@ -28,7 +28,7 @@ vector<int> topView(Node *root)
         Node *t=q.front().first;
         int h=q.front().second;
         q.pop();
-        if(m[h]==0) m[h]=t->data;
+        if(m[h]==0) m[h]=t->data; //as we want the value at topmost level so check if already filled, then dont update
         if(t->left) q.push({t->left,h-1});
         if(t->right) q.push({t->right,h+1});
     }
