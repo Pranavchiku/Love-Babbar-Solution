@@ -31,47 +31,29 @@ void insert(Node *root, int key){
     
 }
 
-void height(Node *root){
-    if(root==NULL) return;
-    else if(root->left!=NULL and root->right!=NULL){
-        root->data=1+max(root->left->data,root->right->data);
-    }
-    else if(root->left!=NULL and root->right==NULL){
-        root->data=1+root->left->data;
-    }
-    else if(root->left==NULL and root->right!=NULL){
-        root->data=1+root->right->data;
-    }
-    else if(root->left==NULL and root->right==NULL){
-        root->data=1;
-    }
+int height(Node *root){
+    if(root==NULL) return 0;
+    return 1+max(height(root->left),height(root->right));
 }
 void inOrder(Node *root, int &ans){
     if(root!=NULL){
         inOrder(root->left,ans);
         if(root->left!=NULL and root->right!=NULL)
-            ans=max(ans,abs(root->left->data-root->right->data));
+            ans=max(ans,abs(height(root->left)-height(root->right)));
         else if(root->left==NULL and root->right!=NULL)
-            ans=max(ans,abs(root->right->data));
+            ans=max(ans,abs(height(root->right)));
         else if(root->left!=NULL and root->right==NULL)
-            ans=max(ans,abs(root->left->data));
+            ans=max(ans,abs(height(root->left)));
         else ans=max(ans,0);
         inOrder(root->right,ans);
     }
 }
-void traversal(Node *root){
-    if(root!=NULL){
-        traversal(root->left);
-        cout<<root->data<<' ';
-        traversal(root->right);
-    }
-}
+
 bool isBalanced(Node *root)
 {
     int ans=INT_MIN;
-    traversal(root);cout<<'\n';
     inOrder(root,ans);
-    if(ans>2) return 0;
+    if(ans>=2) return 0;
     else return 1;
 }
 
