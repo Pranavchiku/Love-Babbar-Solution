@@ -24,6 +24,13 @@ class Graph
 
         //print DFS for disconnected graph
         void DFSDisconnected(map<int,bool> &visited);
+
+        //to check if cycle is present or not
+        bool isCyclic();
+
+        //helper function to check cycle
+        //pass a source and visited map
+        bool isCyclicHelper(int v, bool visited[], bool *recStack);
 };
 
 Graph:: Graph(int v){
@@ -77,6 +84,51 @@ void Graph:: DFSDisconnected(map<int, bool> &visited){
         }
     }
 }
+
+bool Graph::isCyclicHelper(int s, bool visited[], bool *recStack)
+{
+    if(visited[s] == false)
+    {
+        // Mark the current node as visited and part of recursion stack
+        visited[s] = true;
+        recStack[s] = true;
+  
+        // Recur for all the vertices adjacent to this vertex
+        for( auto &it : adj[s]){
+            if(!visited[it] and isCyclicHelper(it,visited,recStack)){
+                return true;
+            }
+            else if(recStack[it]){
+                return true;
+            }
+        }
+  
+    }
+    recStack[s] = false;  // remove the vertex from recursion stack
+    return false;
+}
+
+bool Graph::isCyclic()
+{
+    // Mark all the vertices as not visited and not part of recursion
+    // stack
+    bool *visited = new bool[v];
+    bool *recStack = new bool[v];
+    for(int i = 0; i < v; i++)
+    {
+        visited[i] = false;
+        recStack[i] = false;
+    }
+  
+    // Call the recursive helper function to detect cycle in different
+    // DFS trees
+    for(int i = 0; i < v; i++)
+        if ( !visited[i] && isCyclicHelper(i, visited, recStack))
+            return true;
+  
+    return false;
+}
+
 //For disconnected graph
 
 vector<int> bfsDisconnected(int v, vector<int> adj[]){
@@ -111,22 +163,25 @@ int main()
 {
     // Create a graph given in the above diagram
     Graph g(6);
-    g.addEdge(0, 1);
-    g.addEdge(0, 2);
+    g.addEdge(5, 3);
+    g.addEdge(3, 1);
     g.addEdge(1, 2);
-    g.addEdge(2, 0);
-    g.addEdge(2, 3);
-    g.addEdge(3, 3);
-    g.addEdge(4, 5);
+    g.addEdge(2, 4);
+    g.addEdge(4, 0);
+    // g.addEdge(3, 3);
+    // g.addEdge(4, 5);
     cout << "Following is Breadth First Traversal "
          << "(starting from vertex 2) \n";
-    g.BFS(1);
+    g.BFS(5);
     cout<<"\n";
 
     cout << "Following is Depth First Traversal "
-         << "(starting from vertex 2) \n";
+         << "(starting from vertex 0) \n";
     map<int,bool> visited;
     g.DFSDisconnected(visited);
     cout<<'\n';
+
+    visited.clear();
+    cout<<g.isCyclic()<<'\n';
     return 0;
 }
