@@ -9,6 +9,8 @@ class Graph
     //Pointer to an array contating adjaceny lists
     vector<vector<int>> adj;
 
+    //store indegree of each vertex
+    vector<int> indegree;
     public:
         Graph(int v); //constructor
 
@@ -31,15 +33,33 @@ class Graph
         //helper function to check cycle
         //pass a source and visited map
         bool isCyclicHelper(int v, bool visited[], bool *recStack);
+
+        //topological sorting helper function
+        void topologicalSortHelper(int s, map<int,bool> &visited, stack<int> &stack);
+
+        //topological sort
+        void topologicalSort();
+
+        //helper function for allTopologicalSort
+        void allTopoSortHelper(vector<int> &res, vector<bool> &visited);
+
+        //alltoplogical sort
+        //use indegree
+        void allTopoSort();
 };
 
 Graph:: Graph(int v){
     this->v=v;
     adj.resize(v);
+
+    //initialise all indegree to 0
+    for(int i=0;i<v;i++) indegree.push_back(0);
 }
 
 void Graph::addEdge(int v, int w){
     adj[v].push_back(w); //add w to v's list
+
+    indegree[w]++;//adding indegree
 }
 
 
@@ -129,6 +149,83 @@ bool Graph::isCyclic()
     return false;
 }
 
+void Graph::topologicalSortHelper(int s, map<int,bool> &visited, stack<int> &stack){
+    visited[s]=true;
+
+    for(auto &it: adj[s]){
+        if(!visited[it]){
+            topologicalSortHelper(it,visited,stack);
+        }
+    }
+    stack.push(s);
+}
+
+void Graph::topologicalSort(){
+    map<int,bool> visited;
+
+    stack<int> stack;
+    for(int i=0;i<v;i++){
+        if(!visited[i]){
+            topologicalSortHelper(i,visited,stack);
+        }
+    }
+    while(!stack.empty()){
+        cout<<stack.top()<<' ';
+        stack.pop();
+    }
+    cout<<'\n';
+}
+
+void Graph::allTopoSortHelper(vector<int> &res, vector<bool> &visited){
+    bool flag=false;
+    for(int i=0;i<v;i++){
+        //check if indegree is 0
+        //and not visited before
+        if(indegree[i]==0 and !visited[i]){
+            //decrease the indegree of elements
+            //in adjacency list of i
+            // i.e. intutively we are deleting node i
+            // and then finding topoSort of remaining elements
+
+            for(auto &it: adj[i]){
+                indegree[it]--;
+            }
+
+            res.push_back(i);
+            visited[i]=true;
+            allTopoSortHelper(res,visited);
+
+            //then once all are done
+            //backtrack it and make always values same
+
+            visited[i]=false;
+            res.erase(res.end()-1);
+            for(auto &it: adj[i]){
+                indegree[it]++;
+            }
+            
+            //this flag indicates whether all topological sort
+            //done or not
+            flag=true;
+        }
+
+    }
+
+    //we reach here if all vertices are visited
+    // and alltopological sort is found
+    if(!flag){
+        for(int i=0;i<res.size();i++){
+            cout<<res[i]<<' ';
+        }
+        cout<<'\n';
+    }
+}
+
+void Graph::allTopoSort(){
+    vector<bool> visited(v,false);
+    vector<int> res;
+    allTopoSortHelper(res,visited);
+}
 //For disconnected graph
 
 vector<int> bfsDisconnected(int v, vector<int> adj[]){
@@ -163,11 +260,13 @@ int main()
 {
     // Create a graph given in the above diagram
     Graph g(6);
-    g.addEdge(5, 3);
-    g.addEdge(3, 1);
-    g.addEdge(1, 2);
-    g.addEdge(2, 4);
+    g.addEdge(5, 0);
+    g.addEdge(5, 2);
     g.addEdge(4, 0);
+    g.addEdge(4, 1);
+    g.addEdge(2, 3);
+    g.addEdge(3, 1);
+
     // g.addEdge(3, 3);
     // g.addEdge(4, 5);
     cout << "Following is Breadth First Traversal "
@@ -183,5 +282,9 @@ int main()
 
     visited.clear();
     cout<<g.isCyclic()<<'\n';
+
+    g.topologicalSort();
+
+    g.allTopoSort();
     return 0;
 }
