@@ -9,8 +9,11 @@ using namespace std;
 //simply perform Tarjan's algorithm
 //i.e. to find all articulation points and check the condition
 
-void bridgeUtil(vector<int> adj[], int u, vector<bool> &visited,vector<int> &disc, vector<int> &low, int &time, vector<int>& parent){
 
+
+void bridgeUtil(vector<int> adj[], int u, vector<bool> &visited,vector<int> &disc, vector<int> &low,vector<int>& parent){
+
+    static int time=0;
     visited[u]=true;
 
     disc[u]=low[u]=++time;
@@ -18,7 +21,7 @@ void bridgeUtil(vector<int> adj[], int u, vector<bool> &visited,vector<int> &dis
     for(auto v: adj[u]){
         if(!visited[v]){
             parent[v]=u;
-            bridgeUtil(adj,v,visited,disc,low,time,parent);
+            bridgeUtil(adj,v,visited,disc,low,parent);
 
             low[u]=min(low[u],low[v]);
             if(low[v]>disc[u]){
@@ -30,8 +33,8 @@ void bridgeUtil(vector<int> adj[], int u, vector<bool> &visited,vector<int> &dis
         }
     }
 }
+
 void bridge(vector<int> adj[], int v){
-    int time=0;
     vector<bool> visited(v,false);
     vector<int> disc(v,0);
     vector<int> low(v);
@@ -43,11 +46,9 @@ void bridge(vector<int> adj[], int v){
     //iterate over all vertices
     for(int i=0;i<v;i++){
         if(!visited[i]){
-            bridgeUtil(adj,i,visited,disc,low,time,parent);
+            bridgeUtil(adj,i,visited,disc,low,parent);
         }
     }
-
-
 }
 // Utility function to add an edge
 void addEdge(vector<int> adj[], int u, int v)
