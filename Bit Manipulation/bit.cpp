@@ -66,8 +66,8 @@ int findUnique3(int arr[], int n){
     return result;
 }
 void subsets(int arr[], int n){
-    //(i<<n) is 2^n
-    for(int i=0;i<(i<<n);i++){
+    //(1<<n) is 2^n
+    for(int i=0;i<(1<<n);i++){
         for(int j=0;j<n;j++){
             if(i&(1<<j)){
                 cout<<arr[j]<<" ";
@@ -114,7 +114,7 @@ int getBit(int n, int pos){
     //we get 0100!=0 so we return 1
     //else return 0
 
-    
+
     //left shit 1 till post
     //this will lead to form 1 at pos position
     int mask = 1 << pos;
@@ -128,5 +128,6 @@ int getBit(int n, int pos){
     }
 }
 int main(){
+    cout<<checkPow2(643814)<<'\n';
     return 0;
 }
