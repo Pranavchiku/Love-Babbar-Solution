@@ -41,7 +41,7 @@ void bellManFord(int e, vector<vector<int>> edges, int v, int src){
     }
 
     //check if there is a negative cycle
-    //above iteration gurantees the shortes distance from source
+    //above iteration gurantees the shortest distance from source
     //if there is a negative cycle then dist[v]>dist[u]+weight(u,v)
     //return it contains negative cycles
 

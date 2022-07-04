@@ -5,7 +5,8 @@ using namespace std;
 
 //floydWarshall is used for finding all shortest paths
 //i.e. shortest path from all vertex to all reachable vertex
-//given is adjacency matrix
+//given is adjacency matrix - as we need to check if K is intermidate
+//vertex between i & j multiple times
 void floydWarshall(vector<vector<int>> &graph){
 
     int v=graph.size();

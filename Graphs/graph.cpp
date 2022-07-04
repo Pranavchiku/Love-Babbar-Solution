@@ -196,7 +196,7 @@ void Graph::allTopoSortHelper(vector<int> &res, vector<bool> &visited){
             allTopoSortHelper(res,visited);
 
             //then once all are done
-            //backtrack it and make always values same
+            //backtrack it and make all values same
 
             visited[i]=false;
             res.erase(res.end()-1);
