@@ -19,7 +19,7 @@ Node* createNode(int data){
 vector<int> topView(Node *root)
 {
     queue<pair<Node*,int>> q; // for bfs
-    map<int, int>m; // vertical height, value
+    map<int, int>m; // horizontal height, value
     vector<int> v;
     if(!root) return v;
 
