@@ -22,6 +22,21 @@ void solve(int ind, vector<int> &A, vector<vector<int>> &ans, vector<int> &res, 
     }
 }
 
+
+// void solve(set<vector<int>> &res, vector<int> curr, vector<int> &A, int ind, int k){
+//     if(k==0){
+//         res.insert(curr);
+//         return;
+//     }
+//     for(int i=ind;i<A.size();i++){
+//         if(i!=ind and A[i]==A[i-1]) continue;
+//         if(A[i]<=k){
+//             curr.push_back(A[i]);
+//             solve(res,curr,A,i+1,k-A[i]);
+//             curr.pop_back();
+//         }
+//     }
+// }
 vector<vector<int>> combinationSum(vector<int> &A, int B)
 {
     vector<vector<int>> ans;
