@@ -3,6 +3,19 @@
 using namespace std;
 #define ll long long int
 
+class Student{
+    private:
+        string name;
+        int age;
+        int height;
+
+    public:
+        int getAge(){
+            return this->age;
+        }
+};
+
+
 class Hero{
     //properties;
 
@@ -94,10 +107,17 @@ int Hero::timeToComplete=10;
 
 int main(){
 
+
+    Student first;
+
+    
+    /*
     //accesed static variable without creating object
     //as it belongs to class
     cout<<"timeToComplete: "<<Hero::timeToComplete<<endl;
     cout<<Hero::random()<<endl;
+    */
+
 
     //can access but not recommended
     // Hero h1;
